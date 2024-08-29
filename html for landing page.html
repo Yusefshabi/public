@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Food Suggestions Based on Blood Type</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Food4Blood</h1>
+            </div>
+            <div class="menu">
+                <a href="#how-it-works">How It Works</a>
+                <a href="#get-started">Get Started</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Get Personalized Food Suggestions Based on Your Blood Type</h2>
+            <p>Discover the best foods for your health and well-being, tailored to your unique blood type.</p>
+            <a href="#get-started" class="cta-btn">Get Started</a>
+        </div>
+    </section>
+
+    <section id="get-started" class="input-section">
+        <h2>Find Your Perfect Food</h2>
+        <form id="suggestionsForm">
+            <label for="blood-type">Select Your Blood Type:</label>
+            <select id="blood-type" name="blood-type" required>
+                <option value="">Choose...</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+
+            <label for="age">Enter Your Age:</label>
+            <input type="number" id="age" name="age" min="0" max="120" required>
+
+            <label for="gender">Select Your Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Choose...</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="weight">Enter Your Weight (kg):</label>
+            <input type="number" id="weight" name="weight" min="0" max="300" required>
+
+            <button type="submit" class="submit-btn">Get Suggestions</button>
+        </form>
+        <div id="loading" class="loading-animation" style="display:none;">Loading...</div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Food4Blood. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('suggestionsForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const bloodType = document.getElementById('blood-type').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const weight = document.getElementById('weight').value;
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+
+            fetch('http://localhost:5001/suggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ bloodType: bloodType, age: age, gender: gender, weight: weight }),
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                localStorage.setItem('suggestions', JSON.stringify(data));
+                loading.style.display = 'none'; // Hide loading animation
+                window.location.href = 'suggestions.html';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                loading.style.display = 'none'; // Hide loading animation
+                alert('Something went wrong. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

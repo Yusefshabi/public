@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Food Suggestions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheetsuggestions.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Personalized Food Suggestions</h1>
+        <div class="summary" id="summary"></div>
+
+        <div class="grid-container">
+            <div class="category-box proteins" id="proteins">
+                <h3>Top Proteins</h3>
+                <ul id="protein-list"></ul>
+            </div>
+
+            <div class="category-box veggies" id="veggies">
+                <h3>Top Vegetables</h3>
+                <ul id="veggie-list"></ul>
+            </div>
+
+            <div class="category-box nuts" id="nuts">
+                <h3>Top Nuts and Seeds</h3>
+                <ul id="nuts-list"></ul>
+            </div>
+
+            <div class="category-box fruits" id="fruits">
+                <h3>Top Fruits</h3>
+                <ul id="fruit-list"></ul>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="category-box" id="health_goals">
+                <h3>Health Goals</h3>
+                <ul id="health-goals-list"></ul>
+            </div>
+
+            <div class="category-box" id="exercise">
+                <h3>Exercise Recommendations</h3>
+                <ul id="exercise-list"></ul>
+            </div>
+        </div>
+
+        <a href="landing%20page.html" class="back-btn">Back to Home</a>
+    </div>
+
+    <script>
+        const suggestions = localStorage.getItem('suggestions');
+        if (suggestions) {
+            const data = JSON.parse(suggestions);
+
+            // Update the summary section
+            document.getElementById('summary').innerHTML = data.summary || "No summary available.";
+
+            // Populate the lists with data
+            const populateList = (elementId, content) => {
+                const listElement = document.getElementById(elementId);
+                if (content) {
+                    const listItems = content.split('\n').map(item => `<li>${item}</li>`).join('');
+                    listElement.innerHTML = listItems;
+                } else {
+                    listElement.innerHTML = "<li>No data available</li>";
+                }
+            };
+
+            populateList('protein-list', data.proteins);
+            populateList('veggie-list', data.veggies);
+            populateList('nuts-list', data.nuts);
+            populateList('fruit-list', data.fruits);
+            populateList('health-goals-list', data.health_goals);
+            populateList('exercise-list', data.exercise);
+        } else {
+            console.error("No data found in localStorage");
+        }
+    </script>
+</body>
+</html>
