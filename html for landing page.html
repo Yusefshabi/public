@@ -79,7 +79,7 @@
             const loading = document.getElementById('loading');
             loading.style.display = 'block';
 
-            fetch('http://localhost:5001/suggestions', {
+            fetch('/suggestions', { // Changed from localhost to relative path
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,6 +101,12 @@
                 console.error('Error:', error);
                 loading.style.display = 'none'; // Hide loading animation
                 alert('Something went wrong. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
+
             });
         });
     </script>
