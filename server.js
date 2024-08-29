@@ -1,12 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path'); // Add this to manage paths
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the root directory (or a 'public' directory if you prefer)
+app.use(express.static(path.join(__dirname)));
+
+// Route to serve the main landing page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html for landing page.html')); // Adjust the path if necessary
+});
+
+// POST endpoint for suggestions
 app.post('/suggestions', async (req, res) => {
     const { bloodType, age, gender, weight } = req.body;
 
@@ -65,5 +75,11 @@ app.post('/suggestions', async (req, res) => {
     }
 });
 
+// Fallback route for 404 errors
+app.get('*', (req, res) => {
+    res.status(404).send('404: Page Not Found');
+});
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
