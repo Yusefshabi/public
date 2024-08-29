@@ -79,7 +79,7 @@
             const loading = document.getElementById('loading');
             loading.style.display = 'block';
 
-            fetch('/suggestions', { // Changed from localhost to relative path
+            fetch('/suggestions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
