@@ -8,12 +8,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files (HTML, CSS, JS)
+// Serve static files (like CSS, JS, images)
 app.use(express.static(path.join(__dirname)));
 
 // Route to serve the main landing page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html for landing page.html'));
+    res.sendFile(path.join(__dirname, 'html for landing page.html')); 
 });
 
 // POST endpoint for suggestions
