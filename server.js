@@ -1,22 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const path = require('path'); // Ensure the path module is imported
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the public directory
+// Serve static files (like CSS) from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve the main landing page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html for landing page.html'));
+    res.sendFile(path.join(__dirname, 'html for landing page.html'));
 });
 
-// Route to serve suggestions.html from the main root
+// Route to serve the suggestions page
 app.get('/suggestions.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'suggestions.html'));
 });
@@ -73,6 +73,7 @@ app.post('/suggestions', async (req, res) => {
             return acc;
         }, {});
 
+        console.log('Generated suggestions:', result);  // Log the result for debugging
         res.json(result);
     } catch (error) {
         console.error('Error generating suggestions:', error.response?.data || error.message);
