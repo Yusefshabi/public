@@ -65,7 +65,42 @@
     </section>
 
     <footer>
+        <p>&copy; 2024 Food4Blood. All rights reserved.</p>
+    </footer>
 
+    <script>
+        document.getElementById('suggestionsForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const bloodType = document.getElementById('blood-type').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const weight = document.getElementById('weight').value;
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+
+            fetch('/suggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ bloodType: bloodType, age: age, gender: gender, weight: weight }),
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                localStorage.setItem('suggestions', JSON.stringify(data));
+                loading.style.display = 'none'; // Hide loading animation
+                window.location.href = '/public/suggestions.html';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                loading.style.display = 'none'; // Hide loading animation
+                alert('Something went wrong. Please try again.');
             });
         });
     </script>
