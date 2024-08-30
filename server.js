@@ -1,19 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
-const path = require('path');
+const path = require('path'); 
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files (like CSS, JS, images)
-app.use(express.static(path.join(__dirname)));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve the main landing page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html for landing page.html')); 
+    res.sendFile(path.join(__dirname, 'html for landing page.html')); // Path to your HTML file in the root directory
 });
 
 // POST endpoint for suggestions
